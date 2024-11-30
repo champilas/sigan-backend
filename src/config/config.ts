@@ -1,4 +1,3 @@
-import { WEB3AUTH_NETWORK, WEB3AUTH_NETWORK_TYPE } from '@web3auth/base';
 import dotenv from 'dotenv';
 dotenv.config();
 
