@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { config } from '../config/config';
-import setupModels from '../db/models';
+import { setupModels } from '../db/models';
 
 const USER: string = encodeURIComponent(config.dbUser as string);
 const PASSWORD: string = encodeURIComponent(config.dbPassword as string);

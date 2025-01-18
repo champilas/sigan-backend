@@ -1,18 +1,17 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
+import { FARMS_TABLE } from "./farm.model";
 
-const USERS_TABLE = "users";
+const HERDS_TABLE = "herds";
 
-interface UserAttributes {
+interface HerdAttributes {
   id: string;
   name: string;
-  email: string;
-  password: string;
-  role: string;
+  farmId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const UserSchema = {
+const HerdSchema = {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -23,19 +22,16 @@ const UserSchema = {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
+  farmId: {
+    field: "farm_id",
     allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  role: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    defaultValue: "USER",
+    type: DataTypes.UUID,
+    references: {
+      model: FARMS_TABLE,
+      key: "id",
+    },
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   },
   createdAt: {
     field: "created_at",
@@ -51,30 +47,26 @@ const UserSchema = {
   },
 };
 
-class User extends Model<UserAttributes> {
+class Herd extends Model<HerdAttributes> implements HerdAttributes {
   public id!: string;
   public name!: string;
-  public email!: string;
-  public password!: string;
-  public role!: string;
+  public farmId!: string;
   public createdAt!: Date;
   public updatedAt!: Date;
 
   static associate(models: any) {
-    this.hasMany(models.Farm, {
-      as: "farms",
-      foreignKey: "userId",
-    });
+    this.belongsTo(models.Farm, { as: "farm", foreignKey: "farmId" });
+    this.hasMany(models.Cow, { as: "cows", foreignKey: "herdId" });
   }
 
   static config(sequelize: Sequelize) {
     return {
       sequelize,
-      tableName: USERS_TABLE,
-      modelName: "User",
+      tableName: HERDS_TABLE,
+      modelName: "Herd",
       timestamps: true,
     };
   }
 }
 
-export { User, UserAttributes, UserSchema, USERS_TABLE };
+export { HERDS_TABLE, HerdSchema, HerdAttributes, Herd };

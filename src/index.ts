@@ -7,6 +7,7 @@ import passport from 'passport';
 import JwtStrategy from './utils/auth/strategies/jwt.strategy';
 import { addTokenToHeader } from './utils/cookies';
 import cookieParser from 'cookie-parser';
+import sequelize from './libs/sequelize';
 
 passport.use(JwtStrategy);
 

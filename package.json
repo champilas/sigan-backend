@@ -4,7 +4,12 @@
   "description": "Backend code for Sigan App",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrations:run": "npx sequelize-cli db:migrate",
+    "migrations:create": "sequelize-cli migration:generate --name",
+    "migrations:undo": "npx sequelize-cli db:migrate:undo",
+    "dev": "nodemon src/index.ts",
+    "start": "npm run migrations:run && node dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,6 +24,7 @@
   "dependencies": {
     "@hapi/boom": "^10.0.1",
     "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
@@ -39,6 +45,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
